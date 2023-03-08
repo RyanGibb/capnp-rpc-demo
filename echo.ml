@@ -13,7 +13,7 @@ let local =
       let msg = Params.msg_get params in
       release_param_caps ();
       let response, results = Service.Response.create Results.init_pointer in
-      Results.reply_set results ("echo:" ^ msg);
+      Results.reply_set results msg;
       Service.return response
   end
 (* $MDX part-end *)
