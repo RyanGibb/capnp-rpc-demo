@@ -1,5 +1,5 @@
-(executable
- (name main)
+(executables
+ (names client server)
  (libraries eio_main capnp-rpc-lwt capnp-rpc-unix logs.fmt)
  (flags (:standard -w -53-55)))
 
