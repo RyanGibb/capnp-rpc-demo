@@ -2,7 +2,7 @@ module Api = Pipe_api.MakeRPC(Capnp_rpc_lwt)
 
 open Capnp_rpc_lwt
 
-let local stdout clock =
+let local ~stdout ~clock =
   let module Pipe = Api.Service.Pipe in
   Pipe.local @@ object
     inherit Pipe.service

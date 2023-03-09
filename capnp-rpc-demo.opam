@@ -3,6 +3,7 @@ depends: [
   "ocaml" {>= "4.08.0"}
   "eio_main"
   "capnp-rpc-lwt"
+  "capnp-rpc-unix"
   "logs"
 ]
 build: [
