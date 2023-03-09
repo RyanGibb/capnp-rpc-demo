@@ -24,7 +24,7 @@ let run_client ~stdin ~stdout service =
       in read_to_stdout ()
     );;
 
-let secret_key = `Ephemeral
+let secret_key = `File "secret-key.pem"
 let listen_address = `TCP ("127.0.0.1", 7000)
 
 let start_server ~sw ~stdout ~clock net =
