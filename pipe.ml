@@ -30,10 +30,12 @@ module Pipe = Api.Client.Pipe
 let read t =
   let open Pipe.Read in
   let request, _params = Capability.Request.create Params.init_pointer in
-  Capability.call_for_value_exn t method_id request |> Results.data_get
+  match Capability.call_for_value t method_id request with
+  | Ok results -> Ok (Results.data_get results)
+  | Error e -> Error e
 
 let write t data =
   let open Pipe.Write in
   let request, params = Capability.Request.create Params.init_pointer in
   Params.data_set params data;
-  ignore (Capability.call_for_value_exn t method_id request)
+  Capability.call_for_unit t method_id request
