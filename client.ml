@@ -11,7 +11,9 @@ let run_client ~stdin ~stdout service =
         let line = Eio.Buf_read.line buf in
         match Pipe.write service line with
         | Ok () -> write_from_stdin ()
-        | Error (`Capnp e) -> Capnp_rpc.Error.pp Format.std_formatter e
+        | Error (`Capnp e) ->
+          Capnp_rpc.Error.pp Format.std_formatter e;
+          Format.print_flush ()
       in write_from_stdin ()
     )
     (fun () ->
@@ -20,7 +22,9 @@ let run_client ~stdin ~stdout service =
         | Ok data ->
           Eio.Flow.copy_string (data ^ "\n") stdout;
           read_to_stdout ()
-        | Error (`Capnp e) -> Capnp_rpc.Error.pp Format.std_formatter e
+        | Error (`Capnp e) ->
+          Capnp_rpc.Error.pp Format.std_formatter e;
+          Format.print_flush ()
       in read_to_stdout ()
     );;
 
