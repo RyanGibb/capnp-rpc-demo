@@ -5,9 +5,7 @@ let () =
   Eio_main.run @@ fun env ->
   let connection = Pipe.Connection.local in
   Capnp_rpc_lwt.Capability.pp Format.std_formatter connection; Format.print_newline ();
-  match Pipe.Connection.create connection with
-  | None -> Eio.traceln "error creating stream"; (* TODO print error *)
-  | Some stream ->
+  let stream = Pipe.Connection.create connection in
   Capnp_rpc_lwt.Capability.pp Format.std_formatter stream; Format.print_newline ();
   Eio.Fiber.both
     (fun () ->

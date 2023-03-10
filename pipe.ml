@@ -69,6 +69,6 @@ module Connection = struct
   let create t =
     let open Api.Client.Connection.Create in
     let request, _params = Capability.Request.create Params.init_pointer in
-    Capability.call_for_value_exn t method_id request |> Results.stream_get
+    Capability.call_for_caps t method_id request Results.stream_get_pipelined
 
 end
