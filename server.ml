@@ -5,7 +5,7 @@ let serve config =
   Eio_main.run @@ fun env ->
   Eio.Switch.run @@ fun sw ->
   let service_id = Capnp_rpc_unix.Vat_config.derived_id config "main" in
-  let restore = Capnp_rpc_net.Restorer.single service_id (Pipe.local ~clock:(Eio.Stdenv.clock env) ~stdout:(Eio.Stdenv.stdout env)) in
+  let restore = Capnp_rpc_net.Restorer.single service_id (Pipe.Connection.local ~clock:(Eio.Stdenv.clock env) ~stdout:(Eio.Stdenv.stdout env)) in
   let vat = Capnp_rpc_unix.serve ~sw ~net:env#net ~restore config in
   match Capnp_rpc_unix.Cap_file.save_service vat service_id cap_file with
   | Error `Msg m -> failwith m

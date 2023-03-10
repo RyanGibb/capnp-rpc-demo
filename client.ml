@@ -3,13 +3,14 @@ let () =
   Logs.set_level (Some Logs.Warning);
   Logs.set_reporter (Logs_fmt.reporter ())
 
-let run_client ~stdin ~stdout service =
+let run_client ~stdin ~stdout connection =
+  let stream = Pipe.Connection.create connection in
   Eio.Fiber.both
     (fun () ->
       let rec write_from_stdin () =
         let buf = Eio.Buf_read.of_flow stdin ~initial_size:100 ~max_size:1_000_000 in
         let line = Eio.Buf_read.line buf in
-        match Pipe.write service line with
+        match Pipe.Stream.write stream line with
         | Ok () -> write_from_stdin ()
         | Error (`Capnp e) ->
           Capnp_rpc.Error.pp Format.std_formatter e;
@@ -18,7 +19,7 @@ let run_client ~stdin ~stdout service =
     )
     (fun () ->
       let rec read_to_stdout () =
-        match Pipe.read service with
+        match Pipe.Stream.read stream with
         | Ok data ->
           Eio.Flow.copy_string (data ^ "\n") stdout;
           read_to_stdout ()
