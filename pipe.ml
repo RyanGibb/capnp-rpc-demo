@@ -58,10 +58,8 @@ module Connection = struct
         let open Connection.Create in
         release_param_caps ();
         let stream = Stream.local in
-        Capnp_rpc_lwt.Capability.pp Format.std_formatter stream; Format.print_newline ();
         let response, results = Service.Response.create Results.init_pointer in
         Results.stream_set results (Some stream);
-        Capnp_rpc_lwt.Capability.pp Format.std_formatter stream; Format.print_newline ();
         Service.return response
 
     end
